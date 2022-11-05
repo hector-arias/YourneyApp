@@ -1,0 +1,142 @@
+
+
+<app-menu></app-menu>
+
+<h1 *ngIf="isLogged">Ya se ha registrado</h1>
+<div *ngIf="!isLogged">
+    <div *ngIf="isLoginFail" class="alert alert-danger"> {{messageError}}</div>
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <form #f="ngForm" [formGroup]="formRegister" (ngSubmit)="onRegister()">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Nombre de Usuario <span style="color:#ff0000">*</span></label>
+                            <input type="text" name="username" id="username" class="{{inputClass(formRegister, 'username')}}" formControlName="username"
+                                required minlength="3" maxlength="50">
+                            <div class="invalid-feedback"
+                                *ngIf="formRegister.get('username').touched && formRegister.get('username').invalid">
+                                <div *ngIf="formRegister.get('username').errors.pattern ">No se permiten puntos al principio o final ni doble puntuación intermedia</div>
+                                <div *ngIf="formRegister.get('username').errors.required">No puede quedar vacío</div>
+                                <div *ngIf="formRegister.get('username').errors.minlength">Debe de tener al menos 3 caracteres</div>
+                                <div *ngIf="formRegister.get('username').errors.maxlength">Debe de tener como máximo 50 caracteres</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Contraseña <span style="color:#ff0000">*</span></label>
+                            <input type="password" name="password" id="password" class="{{inputClass(formRegister, 'password')}}" formControlName="password"
+                                required minlength="8" maxlength="50" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d.,:;\/\\\$@\_\-\¿\?\¡\!*\[\]\(\)\=\{\}]{8,}$"
+                                [ngClass]="{'is-invalid':formRegister.get('password').touched && formRegister.get('password').invalid}">
+                            <div class="invalid-feedback"
+                                *ngIf="formRegister.get('password').touched && formRegister.get('password').invalid">
+                                <div *ngIf="formRegister.get('password').errors.required">Debe insertar una contraseña</div>
+                                <div *ngIf="formRegister.get('password').errors.minlength">Debe de tener al menos 8 caracteres</div>
+                                <div *ngIf="formRegister.get('password').errors.maxlength">Debe de tener como máximo 50 caracteres</div>
+                                <div *ngIf="formRegister.get('password').errors.pattern">Debe contener al menos una letra y un número. No se permite la ñ</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Nombre <span style="color:#ff0000">*</span></label>
+                            <input type="text" name="firstName" id="firstName" class="{{inputClass(formRegister, 'firstName')}}" formControlName="firstName"
+                                required minlength="3" maxlength="50">
+                            <div class="invalid-feedback"
+                                *ngIf="formRegister.get('firstName').touched && formRegister.get('firstName').invalid">
+                                <div *ngIf="formRegister.get('firstName').errors.required">No puede quedar vacío</div>
+                                <div *ngIf="formRegister.get('firstName').errors.minlength">Debe de tener al menos 3 caracteres</div>
+                                <div *ngIf="formRegister.get('firstName').errors.maxlength">Debe de tener como máximo 50 caracteres</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Apellidos <span style="color:#ff0000">*</span></label>
+                            <input type="text" name="lastName" id="lastName" class="{{inputClass(formRegister, 'lastName')}}" formControlName="lastName"
+                                required minlength="3" maxlength="50">
+                            <div class="invalid-feedback"
+                                *ngIf="formRegister.get('lastName').touched && formRegister.get('lastName').invalid">
+                                <div *ngIf="formRegister.get('lastName').errors.required">No puede quedar vacío</div>
+                                <div *ngIf="formRegister.get('lastName').errors.minlength">Debe de tener al menos 3 caracteres</div>
+                                <div *ngIf="formRegister.get('lastName').errors.maxlength">Debe de tener como máximo 50 caracteres</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span style="color:#ff0000">*</span> </label>
+                        <input type="text" name="email" id="email" class="{{inputClass(formRegister, 'email')}}" formControlName="email"
+                            required email minlength="5" maxlength="50">
+                        <div class="invalid-feedback"
+                            *ngIf="formRegister.get('email').touched && formRegister.get('email').invalid">
+                            <div *ngIf="formRegister.get('email').errors.required">No puede quedar vacío</div>
+                            <div *ngIf="formRegister.get('email').errors.minlength">Debe de tener al menos 5 caracteres</div>
+                            <div *ngIf="formRegister.get('email').errors.maxlength">Debe de tener como máximo 50 caracteres</div>
+                            <div *ngIf="formRegister.get('email').errors.email || formRegister.get('email').errors.pattern ">Formato no válido</div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label> Aceptar los <a href="/terminos" target="_blank">términos y condiciones<span style="color:#ff0000">*</span></a>. </label>
+                        
+
+                        <input style="position: relative; left: 19px; top: 2px;" class="{{inputClassCheck(formRegister, 'acceptedTerms')}}" formControlName="acceptedTerms" type="checkbox"  id="acceptedTerms">
+                            
+                        
+                            <div class="invalid-feedback" *ngIf="formRegister.get('acceptedTerms').touched && formRegister.get('acceptedTerms').invalid">
+                        
+                                <div *ngIf="formRegister.get('acceptedTerms').errors.required">Debe de aceptar los términos y condiciones</div>
+                           
+                            </div>
+                       
+                    </div>
+                   
+                    <div class="mt-3">
+                        <button class="btn btn-primary" [disabled]="!formRegister.valid" data-target="#register" data-toggle="modal" data-backdrop="static" data-keyboard="false" >
+                             Confirmar</button>
+                    </div>
+                    
+                </form>
+
+                    <!-- Confirmation Email -->
+                    <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 *ngIf="!reload" class="modal-title" id="exampleModalLongTitle">Confirmación correo electrónico enviada</h5>
+                            <h5 *ngIf="reload" class="modal-title" id="exampleModalLongTitle">Error al realizar el registro</h5>
+                            </div>
+                            <div *ngIf="!reload" class="modal-body">
+                            Revise su correo para confirmar su cuenta
+                            <br>
+                            <br>
+                            
+                            <div >
+
+                                ¿No le ha llegado el correo?
+                                <a type="button" class="btn btn-primary" (click)="sendCode(formRegister.get('email').value)" >Reenviar correo de confirmación</a>
+
+                            </div>
+                            </div>
+
+                            <div *ngIf="reload" class="modal-body">
+                                
+                                <div >
+    
+                                   <p>{{messageError}}</p>
+    
+                                </div>
+                                </div>
+
+
+                            <div class="modal-footer">
+                            <a type="button" class="btn btn-secondary" *ngIf="!reload" (click)="redirect()" data-dismiss="modal">Iniciar sesión</a>
+                            <a type="button" class="btn btn-secondary" *ngIf="reload" data-dismiss="modal">Cerrar</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            
+</div>
+
